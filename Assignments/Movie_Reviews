@@ -1,1 +1,93 @@
+import random
 
+# Review class
+class Review:
+    """A class representing a single movie review."""
+    
+    def __init__(self, rating, text):
+        self.rating = rating
+        self.text = text
+
+    def pretty_print(self):
+        return "Rating: " + str(self.rating) + ", Review: " + self.text
+
+
+# Movie class
+class Movie:
+    """A class representing a movie with multiple reviews."""
+    
+    def __init__(self, title):
+        self.title = title
+        self.reviews = []
+
+    def add_review(self, review):
+        self.reviews.append(review)
+
+    def average_rating(self):
+        if len(self.reviews) == 0:
+            return 0
+        total = 0
+        for r in self.reviews:
+            total = total + r.rating
+        return total / len(self.reviews)
+
+    def best_review(self):
+        if len(self.reviews) == 0:
+            return None
+        max_rating = self.reviews[0].rating
+        for r in self.reviews:
+            if r.rating > max_rating:
+                max_rating = r.rating
+        # Collect all reviews with max_rating
+        top_reviews = []
+        for r in self.reviews:
+            if r.rating == max_rating:
+                top_reviews.append(r)
+        return random.choice(top_reviews)
+
+    def worst_review(self):
+        if len(self.reviews) == 0:
+            return None
+        min_rating = self.reviews[0].rating
+        for r in self.reviews:
+            if r.rating < min_rating:
+                min_rating = r.rating
+        # Collect all reviews with min_rating
+        bottom_reviews = []
+        for r in self.reviews:
+            if r.rating == min_rating:
+                bottom_reviews.append(r)
+        return random.choice(bottom_reviews)
+
+    def display_reviews(self):
+        if len(self.reviews) == 0:
+            print("No reviews yet for " + self.title)
+        else:
+            for r in self.reviews:
+                print(r.pretty_print())
+
+
+# Driver code
+def main():
+    movie = Movie("Inception")
+
+    r1 = Review(5, "Amazing movie! Loved the visuals and plot.")
+    r2 = Review(4, "Great movie, but slightly confusing.")
+    r3 = Review(3, "It was okay. Some parts were slow.")
+    r4 = Review(5, "Masterpiece! Would watch again.")
+
+    movie.add_review(r1)
+    movie.add_review(r2)
+    movie.add_review(r3)
+    movie.add_review(r4)
+
+    print("Reviews for " + movie.title + ":")
+    movie.display_reviews()
+
+    print("Average rating: " + str(movie.average_rating()))
+    print("Best review: " + movie.best_review().pretty_print())
+    print("Worst review: " + movie.worst_review().pretty_print())
+
+# Run the driver code
+if __name__ == "__main__":
+    main()
